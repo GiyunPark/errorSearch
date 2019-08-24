@@ -2,6 +2,8 @@ package com.giyun.errorsearch;
 
 import com.giyun.errorsearch.domain.Board;
 import com.giyun.errorsearch.domain.User;
+import com.giyun.errorsearch.domain.enums.BoardType;
+import com.giyun.errorsearch.repository.BoardRepository;
 import com.giyun.errorsearch.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +26,8 @@ public class JpaMappingTest {
     @Autowired
     UserRepository userRepository;
 
-//    @Autowired
-//    BoardRepository boardRepository;
+    @Autowired
+    BoardRepository boardRepository;
 
     @Before
     public void init(){
@@ -36,12 +38,14 @@ public class JpaMappingTest {
             .createdDate(LocalDateTime.now())
             .build());
 
-//        boardRepository.save(Board.builder()
-//            .title(boardTestTitle)
-//            .content("콘텐츠")
-//            .createdDate(LocalDateTime.now())
-//            .updatedDate(LocalDateTime.now())
-//            .build());
+        boardRepository.save(Board.builder()
+            .title(boardTestTitle)
+            .content("콘텐츠")
+            .boardType(BoardType.unsolved)
+            .createdDate(LocalDateTime.now())
+            .updatedDate(LocalDateTime.now())
+            .user(user)
+            .build());
     }
 
     @Test
@@ -50,6 +54,11 @@ public class JpaMappingTest {
         assertThat(user.getName(), is("Giyun"));
         assertThat(user.getPassword(), is("test"));
         assertThat(user.getEmail(), is(email));
+
+        Board board = boardRepository.findByUser(user);
+        assertThat(board.getTitle(), is(boardTestTitle));
+        assertThat(board.getContent(), is("콘텐츠"));
+        assertThat(board.getBoardType(),is(BoardType.unsolved));
     }
 
 }
