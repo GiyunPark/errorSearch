@@ -1,6 +1,7 @@
 package com.giyun.errorsearch.domain;
 
-import com.giyun.errorsearch.domain.enums.BoardType;
+import com.giyun.errorsearch.domain.enums.LanguageType;
+import com.giyun.errorsearch.domain.enums.SolveType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class Board {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private BoardType boardType;
+    private LanguageType languageType;
 
     @Column
     private LocalDateTime createdDate;
@@ -35,18 +36,22 @@ public class Board {
     @Column
     private LocalDateTime updatedDate;
 
+    @Column
+    private SolveType solveType;
+
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
     @Builder
-    public Board(String title, String content, BoardType boardType,
-                 LocalDateTime createdDate, LocalDateTime updatedDate, User user){
+    public Board(String title, String content, LanguageType languageType,
+                 LocalDateTime createdDate, LocalDateTime updatedDate, User user, SolveType solveType){
         this.title=title;
         this.content=content;
-        this.boardType=boardType;
+        this.languageType = languageType;
         this.createdDate=createdDate;
         this.updatedDate=updatedDate;
         this.user= user;
+        this.solveType=solveType;
     }
 
 }
