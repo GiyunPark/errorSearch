@@ -2,7 +2,7 @@ package com.giyun.errorsearch;
 
 import com.giyun.errorsearch.domain.Board;
 import com.giyun.errorsearch.domain.User;
-import com.giyun.errorsearch.domain.enums.BoardType;
+import com.giyun.errorsearch.domain.enums.LanguageType;
 import com.giyun.errorsearch.repository.BoardRepository;
 import com.giyun.errorsearch.repository.UserRepository;
 import org.junit.Before;
@@ -41,7 +41,7 @@ public class JpaMappingTest {
         boardRepository.save(Board.builder()
             .title(boardTestTitle)
             .content("콘텐츠")
-            .boardType(BoardType.unsolved)
+            .languageType(LanguageType.JAVA)
             .createdDate(LocalDateTime.now())
             .updatedDate(LocalDateTime.now())
             .user(user)
@@ -58,7 +58,7 @@ public class JpaMappingTest {
         Board board = boardRepository.findByUser(user);
         assertThat(board.getTitle(), is(boardTestTitle));
         assertThat(board.getContent(), is("콘텐츠"));
-        assertThat(board.getBoardType(),is(BoardType.unsolved));
+        assertThat(board.getLanguageType(),is(LanguageType.JAVA));
     }
 
 }
