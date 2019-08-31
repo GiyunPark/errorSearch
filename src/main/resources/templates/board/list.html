@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Board Form</title>
+    <link rel="stylesheet" th:href="@{/css/base.css}" />
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <div th:replace="layout/header::header"></div>
+
+    <br><br><br>
+    <div class="row" id="header-row-02" style="text-align: center;">
+        <div class="col-12">
+            <h1>Error Search</h1>
+            <h5>모든 코딩에 의한 에러 메시지를 저장하고 해결하기 위한 질의&검색 사이트입니다.</h5>
+        </div>
+    </div>
+    <br><br><br>
+    <div class="row" id="body-row-01">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="에러 검색" aria-label="에러 검색" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>게시글 목록</h1>
+        </div>
+        <div class="pull-right" style="width:100px;margin:10px 0;">
+            <a href="/board" class="btn btn-primary btn-block">등록</a>
+        </div>
+        <br/><br/><br/>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>언어</th>
+                    <th>제목</th>
+                    <th>작성 날짜</th>
+                    <th>수정 날짜</th>
+                    <th>해결 여부</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="board : ${boardList}">
+                        <td th:text="${board.idx}"></td>
+                        <td th:text="${board.languageType.value}"></td>
+                        <td><a th:href="'/board?idx='+${board.idx}" th:text="${board.title}"></a></td>
+                        <td th:text="${board.createdDate} ? ${#temporals.format(board.createdDate,'yyyy-MM-dd HH:mm')} : ${board.createdDate}"></td>
+                        <td th:text="${board.updatedDate} ? ${#temporals.format(board.updatedDate,'yyyy-MM-dd HH:mm')} : ${board.updatedDate}"></td>
+                        <td th:text="${board.solveType.value}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        <br/>
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center" th:with="startNumber=${T(Math).floor(boardList.number/10)}*10+1, endNumber=(${boardList.totalPages} > ${startNumber}+9) ? ${startNumber}+9 : ${boardList.totalPages}">
+                <li class="page-item" ><a class="page-link" aria-label="Previous" href="/board/list?page=1">Previous</a></li>
+                <li class="page-item" th:style="${boardList.first} ? 'display:none'">
+                    <a class="page-link" th:href="@{/board/list(page=${boardList.number})}">&lsaquo;</a>
+                </li>
+
+                <li class="page-item" th:each="page :${#numbers.sequence(startNumber, endNumber)}" th:class="(${page} == ${boardList.number}+1) ? 'active'">
+                    <a class="page-link" th:href="@{/board/list(page=${page})}" th:text="${page}"><span class="sr-only"></span></a>
+                </li>
+
+                <li class="page-item" th:style="${boardList.last} ? 'display:none'">
+                    <a class="page-link" th:href="@{/board/list(page=${boardList.number}+2)}">&rsaquo;</a>
+                </li>
+                <li class="page-item" ><a class="page-link" aria-label="Next" th:href="@{/board/list(page=${boardList.totalPages})}">Next</a></li>
+            </ul>
+        </nav>
+        <!-- /Pagination -->
+    </div>
+
+    <div th:replace="layout/footer::footer"></div>
+</body>
+</html>
