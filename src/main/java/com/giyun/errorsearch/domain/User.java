@@ -1,5 +1,6 @@
 package com.giyun.errorsearch.domain;
 
+import com.giyun.errorsearch.domain.enums.SocialType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,13 @@ public class User {
     private String email;
 
     @Column
+    private String principal;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType;
+
+    @Column
     private LocalDateTime createdDate;
 
     @Column
@@ -35,10 +43,12 @@ public class User {
 
     @Builder
     public User(String name, String password, String email, LocalDateTime createdDate,
-                LocalDateTime updatedDate){
+                String principal, SocialType socialType ,LocalDateTime updatedDate){
         this.name=name;
         this.password=password;
         this.email=email;
+        this.principal=principal;
+        this.socialType=socialType;
         this.createdDate=createdDate;
         this.updatedDate=updatedDate;
     }
